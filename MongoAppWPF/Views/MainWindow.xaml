@@ -1,0 +1,54 @@
+﻿<Window x:Class="MongoAppWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
+        mc:Ignorable="d"
+        Title="MongoAppWPF"
+        ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Width="480" Height="600">
+
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
+            <!--Top Panel-->
+            <Canvas Height="50" Margin="0,5,0,0">
+                <Button Content="Search" Width="60" Height="40" BorderBrush="Black" Margin="50,5,0,0" Command="{Binding Path=SearchUserCommand}"/>
+
+                <TextBox Height="40" Width="200" TextWrapping="Wrap" Margin="125,5,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FlowDirection="RightToLeft" Grid.IsSharedSizeScope="True" Text="{Binding Path=SearchCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Content="Add" Width="60" Height="40" BorderBrush="Black" Margin="400,5,0,0" Command="{Binding Path=AddUserCommand}"/>
+            </Canvas>
+
+            <!--Table Rendering-->
+            <Canvas Height="250">
+                <ListView Height="250" Width="300" VerticalAlignment="Center" HorizontalAlignment="Center" Canvas.Left="90" ItemsSource="{Binding Users}" SelectedItem="{Binding Path=SelectedUser, Mode=TwoWay}" >
+                    <ListView.View >
+                        <GridView>
+                            <GridViewColumn Header="Nick Name" DisplayMemberBinding="{Binding NickName}" Width="100"/>
+                            <GridViewColumn Header="Age" DisplayMemberBinding="{Binding Age}" Width="100"/>
+                            <GridViewColumn Header="Country" DisplayMemberBinding="{Binding Country}" Width="100"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Canvas>
+
+            <!--Labels and TextBox Rendering-->
+            <Canvas Height="150" Width="480">
+                <Label Canvas.Left="90" Canvas.Top="20" RenderTransformOrigin="-0.951,-0.172" Height="30" Width="81" Content="Nock Name:"/>
+                <TextBox Canvas.Left="191" Canvas.Top="20" Height="30" TextWrapping="Wrap" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="200" Text="{Binding Path=NickName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Canvas.Left="90" Canvas.Top="60" RenderTransformOrigin="-0.951,-0.172" Height="30" Width="70" Content="Age:"/>
+                <TextBox Canvas.Left="190" Canvas.Top="60" Height="30" TextWrapping="Wrap" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="200" Text="{Binding Path=Age, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Canvas.Left="90" Canvas.Top="100" RenderTransformOrigin="-0.951,-0.172" Height="30" Width="70" Content="Country:"/>
+                <TextBox Canvas.Left="190" Canvas.Top="100" Height="30" TextWrapping="Wrap" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="200" Text="{Binding Path=Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Canvas>
+
+            <!--Delete & Save/Update Panel-->
+            <Canvas Height="115" Width="480" Margin="0,0,0,0">
+                <Button Content="Delete" Width="80" Height="40" BorderBrush="Black" Margin="150,25,0,0" Command="{Binding Path=DeleteUserCommand}"/>
+                <Button Content="Update" Width="80" Height="40" BorderBrush="Black" Margin="290,25,0,0" Command="{Binding Path=UpdateUserCommand}"/>
+            </Canvas>
+
+        </StackPanel>
+
+    </DockPanel>
+</Window>

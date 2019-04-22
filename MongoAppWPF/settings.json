@@ -1,0 +1,6 @@
+{
+  "MongoDBConfig": {
+    "Connection": "mongodb://localhost:27017",
+    "Database": "MongoAppWPF"
+  }
+}
