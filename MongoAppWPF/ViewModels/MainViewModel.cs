@@ -61,9 +61,11 @@ namespace MongoAppWPF.ViewModels
                 {
                     _user = value;
                     NotifyPropertyChanged(nameof(User));
+                    //notify all user parameters
                     NotifyPropertyChanged(nameof(Country));
                     NotifyPropertyChanged(nameof(NickName));
                     NotifyPropertyChanged(nameof(Age));
+                    //Update user dependent commands executes
                     UpdateCommandsExecutes();
                 }
             }
@@ -78,6 +80,7 @@ namespace MongoAppWPF.ViewModels
                 _users = value;
                 NotifyPropertyChanged(nameof(Users));
 
+                //update selected user
                 if (SelectedUser != null)
                 {
                     SelectedUser = _users.FirstOrDefault(u => u._id.Equals(SelectedUser._id));
@@ -92,6 +95,7 @@ namespace MongoAppWPF.ViewModels
             set
             {
                 _selectedUser = value;
+                //Setup user from selected user
                 User = _selectedUser ?? new User();
                 NotifyPropertyChanged(nameof(SelectedUser));
             }
@@ -105,6 +109,7 @@ namespace MongoAppWPF.ViewModels
             {
                 _searchCriteria = value;
                 NotifyPropertyChanged(nameof(SearchCriteria));
+                //Notify search command
                 SearchUserCommand.RaiseCanExecuteChanged();
             }
         }
@@ -126,6 +131,7 @@ namespace MongoAppWPF.ViewModels
         public async Task<bool> RemoveUserAsync()
         {
             var result = await _service.RemoveUserAsync(_selectedUser);
+            //refresh table
             if (result)
             {
                 PopulateTable();
@@ -135,6 +141,7 @@ namespace MongoAppWPF.ViewModels
 
         public async Task<bool> UpdateUserAsync()
         {
+            //create user from selected user id and user parameters
             var user = new User
             {
                 _id = _selectedUser._id,
@@ -143,6 +150,7 @@ namespace MongoAppWPF.ViewModels
                 NickName = _user.NickName
             };
             var result = await _service.UpdateUserAsync(user);
+            // refresh table
             if (result)
             {
                 PopulateTable();
@@ -153,6 +161,7 @@ namespace MongoAppWPF.ViewModels
         public async Task<User> GetUserAsync()
         {
             var user = await _service.GetUserAsync(SearchCriteria);
+            //Select finded user
             if (user != null)
             {
                 SelectedUser = Users.FirstOrDefault(u => u._id.Equals(user._id));
@@ -169,7 +178,7 @@ namespace MongoAppWPF.ViewModels
         }
         #endregion
 
-        public bool IsUserValid =>
+        public bool IsUserDataValid =>
             User.Age >= 0 && User.Age < 100 && 
             !string.IsNullOrEmpty(User.Country) &&
             !string.IsNullOrEmpty(User.NickName);
@@ -180,9 +189,10 @@ namespace MongoAppWPF.ViewModels
         {
             _service = service;
 
-            AddUserCommand = new AsyncCommand(AddUserAsync, () => IsUserValid);
+            //init commands
+            AddUserCommand = new AsyncCommand(AddUserAsync, () => IsUserDataValid);
             DeleteUserCommand = new AsyncCommand(RemoveUserAsync, () => SelectedUser != null);
-            UpdateUserCommand = new AsyncCommand(UpdateUserAsync, () => IsUserValid && SelectedUser != null);
+            UpdateUserCommand = new AsyncCommand(UpdateUserAsync, () => IsUserDataValid && SelectedUser != null);
             SearchUserCommand = new AsyncCommand(GetUserAsync, () => !string.IsNullOrEmpty(SearchCriteria));
 
             User = new User();
