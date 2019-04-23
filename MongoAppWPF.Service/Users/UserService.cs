@@ -15,7 +15,7 @@ namespace MongoAppWPF.Service.Users
             _repository = repository;
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync() => await _repository.GetAllUsersAsync();
+        public Task<IEnumerable<User>> GetAllUsersAsync() => _repository.GetAllUsersAsync();
 
         public async Task<User> GetUserAsync(string searchCriteria)
         {
@@ -29,10 +29,10 @@ namespace MongoAppWPF.Service.Users
             return result;
         }
 
-        public async Task AddUserAsync(User user) => await _repository.AddUserAsync(user);
+        public Task AddUserAsync(User user) => _repository.AddUserAsync(user);
+        
+        public Task<bool> RemoveUserAsync(User user) => _repository.RemoveUserAsync(user);
 
-        public async Task<bool> RemoveUserAsync(User user) => await _repository.RemoveUserAsync(user);
-
-        public async Task<bool> UpdateUserAsync(User user) => await _repository.UpdateUserAsync(user);
+        public Task<bool> UpdateUserAsync(User user) => _repository.UpdateUserAsync(user);
     }
 }

@@ -22,7 +22,7 @@ namespace MongoAppWPF.External.Users
         {
             try
             {
-                return await _mongoDbClient.UsersData.Find(u => true).ToListAsync();
+                return await _mongoDbClient.UsersData.Find(u => true)?.ToListAsync();
             }
             catch (Exception ex)
             {
